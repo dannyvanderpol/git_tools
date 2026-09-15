@@ -1,17 +1,12 @@
 @echo off
-
-if "%~1"=="" (
-    echo Usage: %~nx0 branch_name
-    exit /b 1
-)
-
-set BRANCH=%1
+for /f "tokens=*" %%i in ('git branch --show-current') do (set BRANCH_NAME=%%i)
+echo reset %BRANCH_NAME% to master
 
 rem sync master
 git checkout master
 git pull
 
 rem reset branch and force push
-git checkout %BRANCH%
+git checkout %BRANCH_NAME%
 git reset --hard master
-git push --force origin %BRANCH%
+git push --force origin %BRANCH_NAME%
